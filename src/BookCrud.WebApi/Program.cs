@@ -1,5 +1,6 @@
 using Microsoft.OpenApi.Models;
 using Serilog;
+using BookCrud.Application;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,7 @@ builder.Services.AddSwaggerGen(options =>
         Description = "An ASP.NET Core Web API for CRUD operations for Book Entity"
     });
 });
+builder.Services.AddApplication();
 
 var app = builder.Build();
 
