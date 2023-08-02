@@ -1,0 +1,52 @@
+﻿using BookCrud.Application.Common.Exceptions;
+using Microsoft.AspNetCore.Mvc;
+
+namespace BookCrud.WebApi.Middlewares;
+
+public class GlobalExceptionHandlingMiddleware : IMiddleware
+{
+    public async Task InvokeAsync(HttpContext context, RequestDelegate next)
+    {
+        try
+        {
+            await next(context);
+        }
+        catch (Exception exception)
+        {
+            Type exceptionType = exception.GetType();
+
+            if (exceptionType == typeof(ValidationException))
+            {
+                await HandleValidationException(context, exception);
+            }
+            else
+            {
+                await HandleException(context, exception);
+            }
+        }
+    }
+
+    private static async Task HandleException(HttpContext httpContext, Exception exception)
+    {
+        httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
+
+        await httpContext.Response.WriteAsJsonAsync(new ProblemDetails
+        {
+            Status = StatusCodes.Status500InternalServerError,
+            Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1"
+        });
+    }
+
+    private static async Task HandleValidationException(HttpContext httpContext, Exception exception)
+    {
+        ValidationException validationException = (ValidationException)exception;
+
+        httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+
+        await httpContext.Response.WriteAsJsonAsync(new ValidationProblemDetails(validationException.Errors)
+        {
+            Status = StatusCodes.Status400BadRequest,
+            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
+        });
+    }
+}

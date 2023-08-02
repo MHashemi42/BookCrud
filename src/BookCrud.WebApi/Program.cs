@@ -1,6 +1,7 @@
 using Microsoft.OpenApi.Models;
 using Serilog;
 using BookCrud.Application;
+using BookCrud.WebApi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,8 +19,11 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 builder.Services.AddApplication();
+builder.Services.AddTransient<GlobalExceptionHandlingMiddleware>();
 
 var app = builder.Build();
+
+app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {
