@@ -4,11 +4,11 @@ namespace BookCrud.Domain.Entities;
 
 public class Book : BaseEntity
 {
-    public string Title { get; set; } = default!;
+    public required string Title { get; set; }
 
     public string? Description { get; set; }
 
-    public string Isbn { get; set; } = default!;
+    public required string Isbn { get; set; }
 
     public int Pages { get; set; }
 
@@ -21,10 +21,10 @@ public class Book : BaseEntity
     public int PublisherId { get; set; }
 
 
-    public Author Author { get; set; } = default!;
+    public required Author Author { get; set; } 
 
-    public Publisher Publisher { get; set; } = default!;
+    public required Publisher Publisher { get; set; } 
 
-    public ICollection<Category> Categories { get; set; } = default!;
+    public required ICollection<Category> Categories { get; set; }
 
 }

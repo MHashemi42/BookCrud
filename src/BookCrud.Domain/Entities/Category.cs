@@ -4,8 +4,8 @@ namespace BookCrud.Domain.Entities;
 
 public class Category : BaseEntity
 {
-    public string Title { get; set; } = default!;
+    public required string Title { get; set; }
 
 
-    public ICollection<Book> Books { get; set; } = default!;
+    public required ICollection<Book> Books { get; set; }
 }

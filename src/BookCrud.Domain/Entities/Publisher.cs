@@ -4,10 +4,10 @@ namespace BookCrud.Domain.Entities;
 
 public class Publisher : BaseEntity
 {
-    public string Title { get; set; } = default!;
+    public required string Title { get; set; }
 
     public string? ImageUrl { get; set; }
 
 
-    public ICollection<Book> Books { get; set; } = default!;
+    public required ICollection<Book> Books { get; set; }
 }

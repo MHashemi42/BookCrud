@@ -4,12 +4,12 @@ namespace BookCrud.Domain.Entities;
 
 public class Author : BaseEntity
 {
-    public string Name { get; set; } = default!;
+    public required string Name { get; set; }
 
     public string? Bio { get; set; }
 
     public string? ImageUrl { get; set; }
 
 
-    public ICollection<Book> Books { get; set; } = default!;
+    public required ICollection<Book> Books { get; set; }
 }
