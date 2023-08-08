@@ -30,12 +30,12 @@ public class GlobalExceptionHandlingMiddleware : IMiddleware
             }
             else
             {
-                await HandleException(context, exception);
+                await HandleException(context);
             }
         }
     }
 
-    private static async Task HandleException(HttpContext httpContext, Exception exception)
+    private static async Task HandleException(HttpContext httpContext)
     {
         httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
 
