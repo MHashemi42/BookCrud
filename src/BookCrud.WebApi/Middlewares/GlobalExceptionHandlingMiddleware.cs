@@ -22,11 +22,9 @@ public class GlobalExceptionHandlingMiddleware : IMiddleware
         {
             _logger.LogError(exception, "An exception occured: {Message}", exception.Message);
 
-            Type exceptionType = exception.GetType();
-
-            if (exceptionType == typeof(ValidationException))
+            if (exception is ValidationException validationException)
             {
-                await HandleValidationException(context, exception);
+                await HandleValidationException(context, validationException);
             }
             else
             {
@@ -41,19 +39,19 @@ public class GlobalExceptionHandlingMiddleware : IMiddleware
 
         await httpContext.Response.WriteAsJsonAsync(new ProblemDetails
         {
+            Title = "Internal server error",
             Status = StatusCodes.Status500InternalServerError,
             Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1"
         });
     }
 
-    private static async Task HandleValidationException(HttpContext httpContext, Exception exception)
+    private static async Task HandleValidationException(HttpContext httpContext, ValidationException exception)
     {
-        ValidationException validationException = (ValidationException)exception;
-
         httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
 
-        await httpContext.Response.WriteAsJsonAsync(new ValidationProblemDetails(validationException.Errors)
+        await httpContext.Response.WriteAsJsonAsync(new ValidationProblemDetails(exception.Errors)
         {
+            Title = exception.Message,
             Status = StatusCodes.Status400BadRequest,
             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
         });
