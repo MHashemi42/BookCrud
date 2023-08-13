@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using ValidationException = BookCrud.Application.Common.Exceptions.ValidationException;
+using FluentValidation;
 using MediatR;
 
 namespace BookCrud.Application.Common.Behaviours;
