@@ -1,6 +1,9 @@
 ﻿using BookCrud.Application.Common.Interfaces;
+using BookCrud.Infrastructure.Authentication;
+using BookCrud.Infrastructure.Authentication.OptionsSetup;
 using BookCrud.Infrastructure.Data;
 using BookCrud.Infrastructure.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -31,6 +34,14 @@ public static class DependencyInjection
         });
 
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IJwtProvider, JwtProvider>();
+
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer();
+        services.AddAuthorization();
+        
+        services.ConfigureOptions<JwtOptionsSetup>();
+        services.ConfigureOptions<JwtBearerOptionsSetup>();
 
         return services;
     }
