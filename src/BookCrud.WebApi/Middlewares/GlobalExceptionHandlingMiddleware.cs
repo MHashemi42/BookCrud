@@ -20,7 +20,7 @@ public class GlobalExceptionHandlingMiddleware : IMiddleware
         }
         catch (Exception exception)
         {
-            _logger.LogError(exception, "An exception occured: {Message}", exception.Message);
+            _logger.LogError(exception, "An exception occured.");
 
             if (exception is ValidationException validationException)
             {
