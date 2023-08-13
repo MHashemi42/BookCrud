@@ -1,4 +1,5 @@
-﻿using BookCrud.Infrastructure.Data;
+﻿using BookCrud.Application.Common.Interfaces;
+using BookCrud.Infrastructure.Data;
 using BookCrud.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +24,13 @@ public static class DependencyInjection
            .AddIdentityCore<ApplicationUser>()
            .AddRoles<IdentityRole>()
            .AddEntityFrameworkStores<ApplicationDbContext>();
+
+        services.Configure<IdentityOptions>(options =>
+        {
+            options.User.RequireUniqueEmail = true;
+        });
+
+        services.AddScoped<IUserService, UserService>();
 
         return services;
     }
