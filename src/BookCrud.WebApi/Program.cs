@@ -9,6 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog((context, configuration) =>
     configuration.ReadFrom.Configuration(context.Configuration));
 
+builder.Services.AddControllers();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -41,6 +43,6 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
-app.MapGet("/", () => "Hello World!");
+app.MapControllers();
 
 app.Run();
