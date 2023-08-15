@@ -27,4 +27,16 @@ public class UsersController : ControllerBase
 
         return Ok(userId);
     }
+
+    [HttpPost("/login")]
+    public async Task<IActionResult> LoginUser(
+        [FromBody] LoginRequest request,
+        CancellationToken cancellationToken)
+    {
+        var command = new LoginCommand(request.Email, request.Password);
+
+        string token = await _sender.Send(command, cancellationToken);
+
+        return Ok(token);
+    }
 }
